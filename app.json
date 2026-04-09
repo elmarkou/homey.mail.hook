@@ -15,10 +15,10 @@
     "fr": "Déclencheur E-mail"
   },
   "description": {
-    "en": "Mail Hook triggers Homey Flows when new emails arrive in a configured IMAP inbox. Configure IMAP host, port, TLS, username and password in the app settings. The trigger exposes tokens for sender email, sender name, subject and a trimmed body so you can build automations based on incoming messages. Includes a 'Test connection' API endpoint for validating credentials.",
-    "nl": "Mail Hook activeert Homey Flows wanneer nieuwe e-mails binnenkomen in een geconfigureerde IMAP-inbox. Stel IMAP-host, poort, TLS, gebruikersnaam en wachtwoord in via de app-instellingen. De trigger biedt tokens voor afzender-e-mail, afzendernaam, onderwerp en een verkorte tekst van de e-mailinhoud, zodat je automatiseringen kunt bouwen op inkomende berichten. Bevat een 'Test connection' API-endpoint om inloggegevens te controleren.",
-    "de": "Mail Hook löst Homey-Flows aus, wenn neue E-Mails in einem konfigurierten IMAP-Postfach eintreffen. Konfigurieren Sie IMAP-Host, Port, TLS, Benutzername und Passwort in den Einstellungen der App. Der Trigger stellt Token für Absender-E-Mail, Absendername, Betreff und einen gekürzten Textkörper bereit, damit Sie Automatisierungen auf Basis eingehender Nachrichten erstellen können. Enthält einen 'Test connection'-API-Endpunkt zum Überprüfen der Zugangsdaten.",
-    "fr": "Mail Hook déclenche des Flows Homey lorsqu'un nouvel e-mail arrive dans une boîte IMAP configurée. Configurez l'hôte IMAP, le port, TLS, le nom d'utilisateur et le mot de passe dans les paramètres de l'application. Le déclencheur fournit des jetons pour l'e-mail de l'expéditeur, le nom de l'expéditeur, l'objet et le corps (tronqué) pour construire des automatisations basées sur les messages entrants. Comprend un point d'API 'Test connection' pour valider les identifiants."
+    "en": "Trigger Flows when a new email arrives via IMAP. Use flow tokens for the sender, subject and body.",
+    "nl": "Activeer Flows wanneer een nieuw e-mailbericht binnenkomt via IMAP. Gebruik flow-tokens voor de afzender, het onderwerp en de inhoud.",
+    "de": "Flows auslösen, wenn eine neue E-Mail per IMAP eintrifft. Flow-Token für Absender, Betreff und Inhalt verwenden.",
+    "fr": "Déclenche des Flows à l'arrivée d'un nouvel e-mail via IMAP. Utilisez les jetons de flux pour l'expéditeur, l'objet et le contenu."
   },
   "tags": {
     "en": [
@@ -27,7 +27,8 @@
       "mail",
       "trigger",
       "automation",
-      "inbox"
+      "inbox",
+      "ma"
     ],
     "nl": [
       "e-mail",
@@ -58,7 +59,7 @@
     "tools"
   ],
   "permissions": [],
-  "brandColor": "#1a73e8",
+  "brandColor": "#e5833c",
   "author": {
     "name": "Elmar",
     "email": ""
@@ -73,6 +74,20 @@
       "method": "POST",
       "path": "/test"
     }
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Elmar Kouwenhoven"
+      }
+    ],
+    "translators": []
+  },
+  "source": "https://github.com/elmarkou/homey.mail.hook",
+  "homepage": "https://github.com/elmarkou/homey.mail.hook",
+  "support": "https://github.com/elmarkou/homey.mail.hook/issues",
+  "bugs": {
+    "url": "https://github.com/elmarkou/homey.mail.hook/issues"
   },
   "flow": {
     "triggers": [

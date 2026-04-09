@@ -60,6 +60,13 @@
       {
         "name": "Elmar Kouwenhoven"
       }
-    ]
+    ],
+    "translators": []
+  },
+  "source": "https://github.com/elmarkou/homey.mail.hook",
+  "homepage": "https://github.com/elmarkou/homey.mail.hook",
+  "support": "https://github.com/elmarkou/homey.mail.hook/issues",
+  "bugs": {
+    "url": "https://github.com/elmarkou/homey.mail.hook/issues"
   }
 }
