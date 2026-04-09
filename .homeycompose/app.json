@@ -7,9 +7,9 @@
   "platforms": ["local"],
   "name": {
     "en": "Mail Hook",
-    "nl": "E-mail Trigger",
-    "de": "E-Mail-Auslöser",
-    "fr": "Déclencheur E-mail"
+    "nl": "Mail Hook",
+    "de": "Mail Hook",
+    "fr": "Mail Hook"
   },
   "description": {
     "en": "Trigger Flows when a new email arrives via IMAP. Use flow tokens for the sender, subject and body.",

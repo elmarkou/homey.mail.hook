@@ -32,7 +32,7 @@ module.exports = class EmailTriggerApp extends Homey.App {
   private _lastSeenUid = -1;
 
   async onInit() {
-    this.log('Email Trigger app initialized');
+    this.log('Mail Hook app initialized');
     this._triggerCard = this.homey.flow.getTriggerCard('email_received');
     this._startPolling();
 
