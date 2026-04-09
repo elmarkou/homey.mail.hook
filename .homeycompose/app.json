@@ -1,0 +1,65 @@
+{
+  "id": "mail.hook",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "runtime": "nodejs",
+  "platforms": ["local"],
+  "name": {
+    "en": "Mail Hook",
+    "nl": "E-mail Trigger",
+    "de": "E-Mail-Auslöser",
+    "fr": "Déclencheur E-mail"
+  },
+  "description": {
+    "en": "Trigger Flows when a new email arrives via IMAP. Use flow tokens for the sender, subject and body.",
+    "nl": "Activeer Flows wanneer een nieuw e-mailbericht binnenkomt via IMAP. Gebruik flow-tokens voor de afzender, het onderwerp en de inhoud.",
+    "de": "Flows auslösen, wenn eine neue E-Mail per IMAP eintrifft. Flow-Token für Absender, Betreff und Inhalt verwenden.",
+    "fr": "Déclenche des Flows à l'arrivée d'un nouvel e-mail via IMAP. Utilisez les jetons de flux pour l'expéditeur, l'objet et le contenu."
+  },
+  "tags": {
+    "en": ["email", "imap", "mail", "trigger", "automation", "inbox", "ma"],
+    "nl": ["e-mail", "imap", "mail", "trigger", "automatisering", "inbox"],
+    "de": [
+      "E-Mail",
+      "imap",
+      "mail",
+      "auslöser",
+      "automatisierung",
+      "posteingang"
+    ],
+    "fr": [
+      "e-mail",
+      "imap",
+      "courrier",
+      "déclencheur",
+      "automatisation",
+      "boîte de réception"
+    ]
+  },
+  "category": ["tools"],
+  "permissions": [],
+  "brandColor": "#e5833c",
+  "author": {
+    "name": "Elmar",
+    "email": ""
+  },
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "api": {
+    "testConnection": {
+      "method": "POST",
+      "path": "/test"
+    }
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Elmar Kouwenhoven"
+      }
+    ]
+  }
+}

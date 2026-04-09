@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      type="text/javascript"
+      src="/homey.js"
+      data-origin="settings"
+    ></script>
+    <style>
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+        color: #333;
+      }
+
+      .page {
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 24px 16px 48px;
+      }
+
+      .status-bar {
+        display: none;
+        padding: 10px 14px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .status-bar.success {
+        background: #d4edda;
+        color: #155724;
+        display: block;
+      }
+      .status-bar.error {
+        background: #f8d7da;
+        color: #721c24;
+        display: block;
+      }
+      .status-bar.info {
+        background: #d1ecf1;
+        color: #0c5460;
+        display: block;
+      }
+
+      .button-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      #btn-test.loading,
+      #btn-save.loading {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="homey-header">
+        <h1 class="homey-title" data-i18n="settings.title"></h1>
+        <p class="homey-subtitle" data-i18n="settings.subtitle"></p>
+      </header>
+
+      <!-- IMAP Connection -->
+      <fieldset class="homey-form-fieldset">
+        <legend
+          class="homey-form-legend"
+          data-i18n="settings.section_connection"
+        ></legend>
+
+        <div class="homey-form-group">
+          <label
+            class="homey-form-label"
+            for="host"
+            data-i18n="settings.label_host"
+          ></label>
+          <input
+            class="homey-form-input"
+            id="host"
+            type="text"
+            autocomplete="off"
+            data-i18n-placeholder="settings.placeholder_host"
+          />
+        </div>
+
+        <div class="homey-form-group">
+          <label
+            class="homey-form-label"
+            for="port"
+            data-i18n="settings.label_port"
+          ></label>
+          <input
+            class="homey-form-input"
+            id="port"
+            type="number"
+            min="1"
+            max="65535"
+            value="993"
+          />
+        </div>
+
+        <div class="homey-form-group">
+          <label
+            class="homey-form-label"
+            for="username"
+            data-i18n="settings.label_username"
+          ></label>
+          <input
+            class="homey-form-input"
+            id="username"
+            type="email"
+            autocomplete="email"
+            data-i18n-placeholder="settings.placeholder_username"
+          />
+        </div>
+
+        <div class="homey-form-group">
+          <label
+            class="homey-form-label"
+            for="password"
+            data-i18n="settings.label_password"
+          ></label>
+          <input
+            class="homey-form-input"
+            id="password"
+            type="password"
+            autocomplete="current-password"
+          />
+        </div>
+
+        <div class="homey-form-group">
+          <label
+            class="homey-form-label"
+            style="
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              cursor: pointer;
+            "
+          >
+            <input id="tls" type="checkbox" checked />
+            <span data-i18n="settings.label_tls"></span>
+          </label>
+        </div>
+      </fieldset>
+
+      <!-- Polling interval -->
+      <fieldset class="homey-form-fieldset">
+        <legend
+          class="homey-form-legend"
+          data-i18n="settings.section_polling"
+        ></legend>
+
+        <div class="homey-form-group">
+          <label
+            class="homey-form-label"
+            for="pollInterval"
+            data-i18n="settings.label_poll_interval"
+          ></label>
+          <input
+            class="homey-form-input"
+            id="pollInterval"
+            type="number"
+            min="10"
+            value="60"
+          />
+        </div>
+      </fieldset>
+
+      <!-- Status message -->
+      <div id="status" class="status-bar" role="alert"></div>
+
+      <!-- Action buttons -->
+      <div class="button-row">
+        <button
+          id="btn-test"
+          class="homey-button-secondary"
+          style="flex: 1"
+          data-i18n="settings.btn_test"
+        ></button>
+        <button
+          id="btn-save"
+          class="homey-button-primary"
+          style="flex: 1"
+          data-i18n="settings.btn_save"
+        ></button>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      function onHomeyReady(Homey) {
+        Homey.ready();
+
+        // ── i18n helper ──────────────────────────────────────────────────
+        function applyI18n() {
+          document.querySelectorAll("[data-i18n]").forEach(function (el) {
+            var key = el.getAttribute("data-i18n");
+            var translated = Homey.__(key);
+            if (translated && translated !== key) el.textContent = translated;
+          });
+          document
+            .querySelectorAll("[data-i18n-placeholder]")
+            .forEach(function (el) {
+              var key = el.getAttribute("data-i18n-placeholder");
+              var translated = Homey.__(key);
+              if (translated && translated !== key)
+                el.setAttribute("placeholder", translated);
+            });
+          // Translate button text
+          ["btn-test", "btn-save"].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            var key = el.getAttribute("data-i18n");
+            if (!key) return;
+            var translated = Homey.__(key);
+            if (translated && translated !== key) el.textContent = translated;
+          });
+        }
+
+        applyI18n();
+
+        // ── Load saved settings ──────────────────────────────────────────
+        Homey.get(function (err, allSettings) {
+          if (err) return;
+          if (!allSettings) return;
+
+          if (allSettings.host)
+            document.getElementById("host").value = allSettings.host;
+          if (allSettings.port)
+            document.getElementById("port").value = allSettings.port;
+          if (allSettings.username)
+            document.getElementById("username").value = allSettings.username;
+          if (allSettings.password)
+            document.getElementById("password").value = allSettings.password;
+          if (allSettings.pollInterval)
+            document.getElementById("pollInterval").value =
+              allSettings.pollInterval;
+          if (typeof allSettings.tls === "boolean") {
+            document.getElementById("tls").checked = allSettings.tls;
+          }
+        });
+
+        // ── Status helper ────────────────────────────────────────────────
+        function showStatus(message, type) {
+          var el = document.getElementById("status");
+          el.textContent = message;
+          el.className = "status-bar " + type;
+        }
+
+        function getFormValues() {
+          return {
+            host: document.getElementById("host").value.trim(),
+            port: parseInt(document.getElementById("port").value, 10) || 993,
+            username: document.getElementById("username").value.trim(),
+            password: document.getElementById("password").value,
+            tls: document.getElementById("tls").checked,
+            pollInterval:
+              parseInt(document.getElementById("pollInterval").value, 10) || 60,
+          };
+        }
+
+        // ── Test connection ──────────────────────────────────────────────
+        document
+          .getElementById("btn-test")
+          .addEventListener("click", function () {
+            var values = getFormValues();
+            if (!values.host || !values.username || !values.password) {
+              showStatus(Homey.__("settings.error_fill_fields"), "error");
+              return;
+            }
+
+            var btn = document.getElementById("btn-test");
+            btn.classList.add("loading");
+            showStatus("...", "info");
+
+            Homey.api("POST", "/test", values, function (err, result) {
+              btn.classList.remove("loading");
+              if (err) {
+                showStatus(
+                  (Homey.__("settings.test_failed") || "Failed") +
+                    ": " +
+                    err.message,
+                  "error",
+                );
+                return;
+              }
+              if (result && result.success) {
+                showStatus(
+                  result.message || Homey.__("settings.test_success"),
+                  "success",
+                );
+              } else {
+                showStatus(
+                  (Homey.__("settings.test_failed") || "Failed") +
+                    ": " +
+                    ((result && result.message) || ""),
+                  "error",
+                );
+              }
+            });
+          });
+
+        // ── Save settings ────────────────────────────────────────────────
+        document
+          .getElementById("btn-save")
+          .addEventListener("click", function () {
+            var values = getFormValues();
+            var btn = document.getElementById("btn-save");
+            btn.classList.add("loading");
+
+            var keys = Object.keys(values);
+            var remaining = keys.length;
+            var hadError = false;
+
+            keys.forEach(function (key) {
+              Homey.set(key, values[key], function (err) {
+                if (err && !hadError) {
+                  hadError = true;
+                  showStatus(err.message, "error");
+                }
+                remaining--;
+                if (remaining === 0) {
+                  btn.classList.remove("loading");
+                  if (!hadError) {
+                    showStatus(Homey.__("settings.save_success"), "success");
+                  }
+                }
+              });
+            });
+          });
+      }
+    </script>
+  </body>
+</html>

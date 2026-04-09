@@ -1,0 +1,24 @@
+{
+  "settings": {
+    "title": "Mail Hook Instellingen",
+    "subtitle": "Configureer uw IMAP e-mailaccount",
+    "section_connection": "IMAP-verbinding",
+    "label_host": "IMAP-host",
+    "placeholder_host": "mail.voorbeeld.nl",
+    "label_port": "Poort",
+    "placeholder_port": "993",
+    "label_username": "Gebruikersnaam / E-mailadres",
+    "placeholder_username": "jij@voorbeeld.nl",
+    "label_password": "Wachtwoord",
+    "label_tls": "TLS/SSL gebruiken (aanbevolen)",
+    "section_polling": "Polling",
+    "label_poll_interval": "Controleer-interval (seconden)",
+    "placeholder_poll_interval": "60",
+    "btn_test": "Verbinding testen",
+    "btn_save": "Wijzigingen opslaan",
+    "test_success": "Verbinding geslaagd!",
+    "test_failed": "Verbinding mislukt",
+    "save_success": "Instellingen opgeslagen.",
+    "error_fill_fields": "Vul host, gebruikersnaam en wachtwoord in."
+  }
+}

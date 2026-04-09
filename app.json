@@ -1,0 +1,151 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "mail.hook",
+  "version": "1.0.0",
+  "compatibility": ">=12.4.0",
+  "sdk": 3,
+  "runtime": "nodejs",
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Mail Hook",
+    "nl": "E-mail Trigger",
+    "de": "E-Mail-Auslöser",
+    "fr": "Déclencheur E-mail"
+  },
+  "description": {
+    "en": "Mail Hook triggers Homey Flows when new emails arrive in a configured IMAP inbox. Configure IMAP host, port, TLS, username and password in the app settings. The trigger exposes tokens for sender email, sender name, subject and a trimmed body so you can build automations based on incoming messages. Includes a 'Test connection' API endpoint for validating credentials.",
+    "nl": "Mail Hook activeert Homey Flows wanneer nieuwe e-mails binnenkomen in een geconfigureerde IMAP-inbox. Stel IMAP-host, poort, TLS, gebruikersnaam en wachtwoord in via de app-instellingen. De trigger biedt tokens voor afzender-e-mail, afzendernaam, onderwerp en een verkorte tekst van de e-mailinhoud, zodat je automatiseringen kunt bouwen op inkomende berichten. Bevat een 'Test connection' API-endpoint om inloggegevens te controleren.",
+    "de": "Mail Hook löst Homey-Flows aus, wenn neue E-Mails in einem konfigurierten IMAP-Postfach eintreffen. Konfigurieren Sie IMAP-Host, Port, TLS, Benutzername und Passwort in den Einstellungen der App. Der Trigger stellt Token für Absender-E-Mail, Absendername, Betreff und einen gekürzten Textkörper bereit, damit Sie Automatisierungen auf Basis eingehender Nachrichten erstellen können. Enthält einen 'Test connection'-API-Endpunkt zum Überprüfen der Zugangsdaten.",
+    "fr": "Mail Hook déclenche des Flows Homey lorsqu'un nouvel e-mail arrive dans une boîte IMAP configurée. Configurez l'hôte IMAP, le port, TLS, le nom d'utilisateur et le mot de passe dans les paramètres de l'application. Le déclencheur fournit des jetons pour l'e-mail de l'expéditeur, le nom de l'expéditeur, l'objet et le corps (tronqué) pour construire des automatisations basées sur les messages entrants. Comprend un point d'API 'Test connection' pour valider les identifiants."
+  },
+  "tags": {
+    "en": [
+      "email",
+      "imap",
+      "mail",
+      "trigger",
+      "automation",
+      "inbox"
+    ],
+    "nl": [
+      "e-mail",
+      "imap",
+      "mail",
+      "trigger",
+      "automatisering",
+      "inbox"
+    ],
+    "de": [
+      "E-Mail",
+      "imap",
+      "mail",
+      "auslöser",
+      "automatisierung",
+      "posteingang"
+    ],
+    "fr": [
+      "e-mail",
+      "imap",
+      "courrier",
+      "déclencheur",
+      "automatisation",
+      "boîte de réception"
+    ]
+  },
+  "category": [
+    "tools"
+  ],
+  "permissions": [],
+  "brandColor": "#1a73e8",
+  "author": {
+    "name": "Elmar",
+    "email": ""
+  },
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "api": {
+    "testConnection": {
+      "method": "POST",
+      "path": "/test"
+    }
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "email_received",
+        "title": {
+          "en": "A new email is received",
+          "nl": "Er is een nieuwe e-mail ontvangen",
+          "de": "Eine neue E-Mail wurde empfangen",
+          "fr": "Un nouvel e-mail a été reçu"
+        },
+        "hint": {
+          "en": "Triggers when a new email arrives in the configured IMAP inbox. Provides the sender address, subject and body as tokens.",
+          "nl": "Activeert wanneer een nieuw e-mailbericht binnenkomt in de geconfigureerde IMAP-inbox. De afzender, het onderwerp en de inhoud zijn beschikbaar als tokens.",
+          "de": "Löst aus, wenn eine neue E-Mail im konfigurierten IMAP-Posteingang eingeht. Absender, Betreff und Inhalt werden als Token bereitgestellt.",
+          "fr": "Se déclenche lorsqu'un nouvel e-mail arrive dans la boîte de réception IMAP configurée. L'expéditeur, l'objet et le contenu sont disponibles en tant que jetons."
+        },
+        "highlight": true,
+        "tokens": [
+          {
+            "name": "from_email",
+            "type": "string",
+            "title": {
+              "en": "From (email)",
+              "nl": "Van (e-mailadres)",
+              "de": "Von (E-Mail)",
+              "fr": "De (e-mail)"
+            },
+            "example": {
+              "en": "sender@example.com"
+            }
+          },
+          {
+            "name": "from_name",
+            "type": "string",
+            "title": {
+              "en": "From (name)",
+              "nl": "Van (naam)",
+              "de": "Von (Name)",
+              "fr": "De (nom)"
+            },
+            "example": {
+              "en": "John Doe"
+            }
+          },
+          {
+            "name": "subject",
+            "type": "string",
+            "title": {
+              "en": "Email subject",
+              "nl": "Onderwerp",
+              "de": "Betreff",
+              "fr": "Objet"
+            },
+            "example": {
+              "en": "Your package has been shipped"
+            }
+          },
+          {
+            "name": "body",
+            "type": "string",
+            "title": {
+              "en": "Email body",
+              "nl": "E-mailinhoud",
+              "de": "E-Mail-Inhalt",
+              "fr": "Corps de l'e-mail"
+            },
+            "example": {
+              "en": "Dear customer, your order is on its way..."
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

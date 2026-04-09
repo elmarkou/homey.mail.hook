@@ -1,0 +1,24 @@
+{
+  "settings": {
+    "title": "E-Mail-Auslöser Einstellungen",
+    "subtitle": "IMAP-E-Mail-Konto konfigurieren",
+    "section_connection": "IMAP-Verbindung",
+    "label_host": "IMAP-Host",
+    "placeholder_host": "mail.beispiel.de",
+    "label_port": "Port",
+    "placeholder_port": "993",
+    "label_username": "Benutzername / E-Mail-Adresse",
+    "placeholder_username": "du@beispiel.de",
+    "label_password": "Passwort",
+    "label_tls": "TLS/SSL verwenden (empfohlen)",
+    "section_polling": "Abfrage",
+    "label_poll_interval": "Prüfintervall (Sekunden)",
+    "placeholder_poll_interval": "60",
+    "btn_test": "Verbindung testen",
+    "btn_save": "Änderungen speichern",
+    "test_success": "Verbindung erfolgreich!",
+    "test_failed": "Verbindung fehlgeschlagen",
+    "save_success": "Einstellungen gespeichert.",
+    "error_fill_fields": "Bitte Host, Benutzername und Passwort ausfüllen."
+  }
+}

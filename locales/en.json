@@ -1,0 +1,24 @@
+{
+  "settings": {
+    "title": "Mail Hook Settings",
+    "subtitle": "Configure your IMAP email account",
+    "section_connection": "IMAP Connection",
+    "label_host": "IMAP Host",
+    "placeholder_host": "mail.example.com",
+    "label_port": "Port",
+    "placeholder_port": "993",
+    "label_username": "Username / Email address",
+    "placeholder_username": "you@example.com",
+    "label_password": "Password",
+    "label_tls": "Use TLS/SSL (recommended)",
+    "section_polling": "Polling",
+    "label_poll_interval": "Check interval (seconds)",
+    "placeholder_poll_interval": "60",
+    "btn_test": "Test connection",
+    "btn_save": "Save changes",
+    "test_success": "Connection successful!",
+    "test_failed": "Connection failed",
+    "save_success": "Settings saved.",
+    "error_fill_fields": "Please fill in host, username and password."
+  }
+}
