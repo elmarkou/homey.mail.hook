@@ -1,10 +1,12 @@
 {
   "id": "mail.hook",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "runtime": "nodejs",
-  "platforms": ["local"],
+  "platforms": [
+    "local"
+  ],
   "name": {
     "en": "Mail Hook",
     "nl": "Mail Hook",
@@ -18,8 +20,23 @@
     "fr": "Déclenche des Flows à l'arrivée d'un nouvel e-mail via IMAP. Utilisez les jetons de flux pour l'expéditeur, l'objet et le contenu."
   },
   "tags": {
-    "en": ["email", "imap", "mail", "trigger", "automation", "inbox", "ma"],
-    "nl": ["e-mail", "imap", "mail", "trigger", "automatisering", "inbox"],
+    "en": [
+      "email",
+      "imap",
+      "mail",
+      "trigger",
+      "automation",
+      "inbox",
+      "ma"
+    ],
+    "nl": [
+      "e-mail",
+      "imap",
+      "mail",
+      "trigger",
+      "automatisering",
+      "inbox"
+    ],
     "de": [
       "E-Mail",
       "imap",
@@ -37,7 +54,9 @@
       "boîte de réception"
     ]
   },
-  "category": ["tools"],
+  "category": [
+    "tools"
+  ],
   "permissions": [],
   "brandColor": "#e5833c",
   "author": {
