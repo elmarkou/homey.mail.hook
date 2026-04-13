@@ -9,7 +9,9 @@ interface MailMeta {
   envelope: FetchMessageObject['envelope'];
 }
 
-interface EmailSettings {
+export interface EmailAccount {
+  id: string;
+  name: string;
   host: string;
   port: number;
   username: string;
@@ -23,41 +25,65 @@ const MIN_POLL_INTERVAL = 10;
 
 module.exports = class EmailTriggerApp extends Homey.App {
 
-  private _pollTimer: ReturnType<typeof setTimeout> | null = null;
+  private _pollTimers: Map<string, ReturnType<typeof setTimeout>> = new Map();
   private _triggerCard: Homey.FlowCardTrigger | null = null;
+  private _triggerCardAccount: Homey.FlowCardTrigger | null = null;
 
-  // UID watermark: we only trigger for emails with UID > this value.
-  // -1 = not anchored yet; the first poll will set it to (UIDNEXT - 1)
-  // so we never fire on emails that already existed before the app started.
-  private _lastSeenUid = -1;
+  // UID watermark per account id: -1 = not anchored yet.
+  private _lastSeenUid: Map<string, number> = new Map();
 
   async onInit() {
     this.log('Mail Hook app initialized');
+
     this._triggerCard = this.homey.flow.getTriggerCard('email_received');
-    this._startPolling();
+    this._triggerCardAccount = this.homey.flow.getTriggerCard('email_received_on_account');
+
+    this._triggerCardAccount.registerRunListener(async (args: any, state: any) => {
+      return args.account && args.account.id === state.accountId;
+    });
+
+    this._triggerCardAccount.registerArgumentAutocompleteListener(
+      'account',
+      async (query: string) => {
+        const accounts = this._getAccounts();
+        const q = query.toLowerCase();
+        return accounts
+          .filter((a) => !q || a.name.toLowerCase().includes(q) || a.username.toLowerCase().includes(q))
+          .map((a) => ({ id: a.id, name: a.name, description: a.username }));
+      },
+    );
+
+    this._migrateOldSettings();
+    this._startAllPolling();
 
     (this.homey.settings as any).on('set', (key: string) => {
-      const connectionKeys = ['host', 'port', 'username', 'password', 'tls'];
-      if (connectionKeys.includes(key)) {
-        this.log(`Connection setting "${key}" changed - resetting UID watermark and restarting polling`);
-        this._lastSeenUid = -1; // force re-anchor on next connect
-        this._startPolling();
-      } else if (key === 'pollInterval') {
-        this.log('Poll interval changed - restarting polling');
-        this._startPolling();
+      if (key === 'accounts') {
+        this.log('Accounts setting changed - restarting all polling');
+        this._stopAllPolling();
+        this._lastSeenUid.clear();
+        this._startAllPolling();
       }
     });
   }
 
   async onUninit() {
-    this._stopPolling();
+    this._stopAllPolling();
   }
 
-  // ─── Settings helpers ─────────────────────────────────────────────────────
+  // ─── Migration from v1 single-account settings ────────────────────────────
 
-  private _getSettings(): EmailSettings {
-    return {
-      host: (this.homey.settings.get('host') as string) ?? '',
+  private _migrateOldSettings() {
+    if (this.homey.settings.get('accounts') !== null && this.homey.settings.get('accounts') !== undefined) return;
+
+    const host = this.homey.settings.get('host') as string | undefined;
+    if (!host) return;
+
+    this.log('Migrating legacy single-account settings to multi-account format');
+
+    const account: EmailAccount = {
+      id: this._generateId(),
+      name: (this.homey.settings.get('username') as string) || host,
+      host,
       port: Number(this.homey.settings.get('port') ?? 993),
       username: (this.homey.settings.get('username') as string) ?? '',
       password: (this.homey.settings.get('password') as string) ?? '',
@@ -67,41 +93,81 @@ module.exports = class EmailTriggerApp extends Homey.App {
         Number(this.homey.settings.get('pollInterval') ?? DEFAULT_POLL_INTERVAL),
       ),
     };
+
+    this.homey.settings.set('accounts', [account]);
   }
 
-  private _isConfigured(settings: EmailSettings): boolean {
-    return !!(settings.host && settings.username && settings.password);
+  private _generateId(): string {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2);
+  }
+
+  // ─── Settings helpers ─────────────────────────────────────────────────────
+
+  private _getAccounts(): EmailAccount[] {
+    const raw = this.homey.settings.get('accounts');
+    if (!raw) return [];
+    if (Array.isArray(raw)) return raw as EmailAccount[];
+    try {
+      const parsed = JSON.parse(String(raw));
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  }
+
+  private _isConfigured(account: EmailAccount): boolean {
+    return !!(account.host && account.username && account.password);
   }
 
   // ─── Polling ──────────────────────────────────────────────────────────────
 
-  private _stopPolling() {
-    if (this._pollTimer) {
-      clearTimeout(this._pollTimer);
-      this._pollTimer = null;
+  private _stopAllPolling() {
+    for (const timer of this._pollTimers.values()) {
+      clearTimeout(timer);
+    }
+    this._pollTimers.clear();
+  }
+
+  private _stopAccountPolling(accountId: string) {
+    const timer = this._pollTimers.get(accountId);
+    if (timer) {
+      clearTimeout(timer);
+      this._pollTimers.delete(accountId);
     }
   }
 
-  private _startPolling() {
-    this._stopPolling();
-    const settings = this._getSettings();
+  private _startAllPolling() {
+    const accounts = this._getAccounts();
+    if (accounts.length === 0) {
+      this.log('No accounts configured - polling suspended');
+      return;
+    }
+    for (const account of accounts) {
+      this._startAccountPolling(account);
+    }
+  }
 
-    if (!this._isConfigured(settings)) {
-      this.log('IMAP not configured - polling suspended (fill in host, username and password in Settings)');
+  private _startAccountPolling(account: EmailAccount) {
+    this._stopAccountPolling(account.id);
+
+    if (!this._isConfigured(account)) {
+      this.log(`Account "${account.name}" is incomplete - skipping (fill in host, username and password)`);
       return;
     }
 
-    this.log(`Polling started: ${settings.username}@${settings.host}:${settings.port} every ${settings.pollInterval}s`);
+    const pollInterval = Math.max(MIN_POLL_INTERVAL, account.pollInterval || DEFAULT_POLL_INTERVAL);
+    this.log(`Polling started for "${account.name}": ${account.username}@${account.host}:${account.port} every ${pollInterval}s`);
 
     const poll = () => {
-      this._checkMail(settings)
+      this._checkMail(account)
         .catch((err: unknown) => {
           const msg = err instanceof Error ? err.message : String(err);
-          this.error(`IMAP poll error: ${msg}`);
+          this.error(`[${account.name}] IMAP poll error: ${msg}`);
         })
         .finally(() => {
-          this.log(`Next poll in ${settings.pollInterval}s`);
-          this._pollTimer = setTimeout(poll, settings.pollInterval * 1000);
+          this.log(`[${account.name}] Next poll in ${pollInterval}s`);
+          const timer = setTimeout(poll, pollInterval * 1000);
+          this._pollTimers.set(account.id, timer);
         });
     };
 
@@ -110,14 +176,14 @@ module.exports = class EmailTriggerApp extends Homey.App {
 
   // ─── IMAP ─────────────────────────────────────────────────────────────────
 
-  private _buildClientOptions(settings: EmailSettings): ImapFlowOptions {
+  private _buildClientOptions(account: EmailAccount): ImapFlowOptions {
     return {
-      host: settings.host,
-      port: settings.port,
-      secure: settings.tls,
+      host: account.host,
+      port: account.port,
+      secure: account.tls,
       auth: {
-        user: settings.username,
-        pass: settings.password,
+        user: account.username,
+        pass: account.password,
       },
       logger: false,
       connectionTimeout: 15000,
@@ -125,15 +191,15 @@ module.exports = class EmailTriggerApp extends Homey.App {
     };
   }
 
-  private async _checkMail(settings: EmailSettings) {
-    this.log(`Connecting to ${settings.host}:${settings.port} (TLS: ${settings.tls})...`);
+  private async _checkMail(account: EmailAccount) {
+    this.log(`[${account.name}] Connecting to ${account.host}:${account.port} (TLS: ${account.tls})...`);
 
-    const client = new ImapFlow(this._buildClientOptions(settings));
+    const client = new ImapFlow(this._buildClientOptions(account));
 
     // Attach BEFORE connect(). imapflow emits asynchronous 'error' events
     // (e.g. ETIMEOUT after connect). Without a listener Node.js crashes the process.
     client.on('error', (err: Error) => {
-      this.error(`IMAP client error: ${err.message}`);
+      this.error(`[${account.name}] IMAP client error: ${err.message}`);
     });
 
     try {
@@ -145,7 +211,9 @@ module.exports = class EmailTriggerApp extends Homey.App {
       throw err;
     }
 
-    this.log('Connected to IMAP server');
+    this.log(`[${account.name}] Connected to IMAP server`);
+
+    const lastSeenUid = this._lastSeenUid.get(account.id) ?? -1;
 
     try {
       const lock = await client.getMailboxLock('INBOX');
@@ -155,17 +223,17 @@ module.exports = class EmailTriggerApp extends Homey.App {
         const uidNext: number = mailbox?.uidNext ?? 1;
         const messageCount: number = mailbox?.exists ?? 0;
 
-        this.log(`INBOX status: ${messageCount} message(s), next UID will be ${uidNext}`);
+        this.log(`[${account.name}] INBOX status: ${messageCount} message(s), next UID will be ${uidNext}`);
 
         // First poll: anchor to current UIDNEXT so we never fire on old emails.
-        if (this._lastSeenUid === -1) {
-          this._lastSeenUid = uidNext - 1;
-          this.log(`First poll: anchored at UID ${this._lastSeenUid}. Waiting for new emails from UID ${uidNext} onwards. Existing messages will NOT trigger.`);
+        if (lastSeenUid === -1) {
+          this._lastSeenUid.set(account.id, uidNext - 1);
+          this.log(`[${account.name}] First poll: anchored at UID ${uidNext - 1}. Waiting for new emails from UID ${uidNext} onwards.`);
           return;
         }
 
-        const fetchFrom = this._lastSeenUid + 1;
-        this.log(`Checking for new emails with UID >= ${fetchFrom}...`);
+        const fetchFrom = lastSeenUid + 1;
+        this.log(`[${account.name}] Checking for new emails with UID >= ${fetchFrom}...`);
 
         // Phase 1: collect metadata only. Calling client.download() inside a
         // client.fetch() loop deadlocks — imapflow can't interleave two FETCH
@@ -175,27 +243,29 @@ module.exports = class EmailTriggerApp extends Homey.App {
         for await (const msg of client.fetch(`${fetchFrom}:*`, {
           envelope: true,
         }, { uid: true })) {
-          if (msg.uid <= this._lastSeenUid) continue;
+          if (msg.uid <= lastSeenUid) continue;
           newMsgs.push({ uid: msg.uid, seq: msg.seq, envelope: msg.envelope });
         }
 
         if (newMsgs.length === 0) {
-          this.log(`No new emails found (last seen UID: ${this._lastSeenUid})`);
+          this.log(`[${account.name}] No new emails found (last seen UID: ${lastSeenUid})`);
         } else {
-          this.log(`Found ${newMsgs.length} new email(s) — downloading bodies...`);
+          this.log(`[${account.name}] Found ${newMsgs.length} new email(s) — downloading bodies...`);
 
+          let newLastSeen = lastSeenUid;
           // Phase 2: fetch loop is done; individual downloads are safe now.
           for (const meta of newMsgs) {
             const from = meta.envelope?.from?.[0]?.address ?? '(unknown)';
             const subject = meta.envelope?.subject ?? '(no subject)';
-            this.log(`Processing email UID ${meta.uid} from ${from}: ${subject}`);
+            this.log(`[${account.name}] Processing email UID ${meta.uid} from ${from}: ${subject}`);
 
             const body = await this._fetchPlainText(client, meta.seq);
-            await this._triggerEmail(meta, body);
-            this._lastSeenUid = Math.max(this._lastSeenUid, meta.uid);
+            await this._triggerEmail(account, meta, body);
+            newLastSeen = Math.max(newLastSeen, meta.uid);
           }
 
-          this.log(`Triggered ${newMsgs.length} new email(s). New watermark UID: ${this._lastSeenUid}`);
+          this._lastSeenUid.set(account.id, newLastSeen);
+          this.log(`[${account.name}] Triggered ${newMsgs.length} new email(s). New watermark UID: ${newLastSeen}`);
         }
 
       } finally {
@@ -205,7 +275,7 @@ module.exports = class EmailTriggerApp extends Homey.App {
       try {
         await client.logout();
       } catch { /* already disconnected */ }
-      this.log('Disconnected from IMAP server');
+      this.log(`[${account.name}] Disconnected from IMAP server`);
     }
   }
 
@@ -223,7 +293,7 @@ module.exports = class EmailTriggerApp extends Homey.App {
     }
   }
 
-  private async _triggerEmail(meta: MailMeta, body: string) {
+  private async _triggerEmail(account: EmailAccount, meta: MailMeta, body: string) {
     const { envelope } = meta;
     if (!envelope) return;
 
@@ -231,22 +301,29 @@ module.exports = class EmailTriggerApp extends Homey.App {
     const fromName = envelope.from?.[0]?.name ?? '';
     const subject = envelope.subject ?? '';
 
-    this.log(`Triggering flow: from "${fromName}" <${fromAddress}>, subject: "${subject}"`);
+    this.log(`[${account.name}] Triggering flow: from "${fromName}" <${fromAddress}>, subject: "${subject}"`);
 
     const tokens = {
       from_email: fromAddress,
       from_name: fromName,
       subject,
       body: body.substring(0, 4096),
+      account_name: account.name,
     };
 
+    const state = { accountId: account.id };
+
+    // Fire "any account" trigger
     await this._triggerCard!.trigger(tokens);
-    this.log('Flow triggered successfully');
+    // Fire "specific account" trigger (run listener filters by accountId)
+    await this._triggerCardAccount!.trigger(tokens, state);
+
+    this.log(`[${account.name}] Flow triggered successfully`);
   }
 
   // ─── Called from settings page via API ────────────────────────────────────
 
-  async testConnection(settings: EmailSettings): Promise<{ success: boolean; message: string }> {
+  async testConnection(settings: EmailAccount): Promise<{ success: boolean; message: string }> {
     if (!this._isConfigured(settings)) {
       return { success: false, message: 'Please fill in all required fields.' };
     }

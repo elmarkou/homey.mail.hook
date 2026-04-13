@@ -1,18 +1,35 @@
 {
-  "id": "email_received",
+  "id": "email_received_on_account",
   "title": {
-    "en": "A new email is received",
-    "nl": "Er is een nieuwe e-mail ontvangen",
-    "de": "Eine neue E-Mail wurde empfangen",
-    "fr": "Un nouvel e-mail a été reçu"
+    "en": "A new email is received on [[account]]",
+    "nl": "Er is een nieuwe e-mail ontvangen op [[account]]",
+    "de": "Eine neue E-Mail wurde auf [[account]] empfangen",
+    "fr": "Un nouvel e-mail a été reçu sur [[account]]"
   },
   "hint": {
-    "en": "Triggers when a new email arrives in any configured IMAP inbox. Provides the account name, sender address, subject and body as tokens.",
-    "nl": "Activeert wanneer een nieuw e-mailbericht binnenkomt in een geconfigureerde IMAP-inbox. De accountnaam, afzender, onderwerp en inhoud zijn beschikbaar als tokens.",
-    "de": "Löst aus, wenn eine neue E-Mail in einem konfigurierten IMAP-Posteingang eingeht. Kontoname, Absender, Betreff und Inhalt werden als Token bereitgestellt.",
-    "fr": "Se déclenche lorsqu'un nouvel e-mail arrive dans une boîte de réception IMAP configurée. Le nom du compte, l'expéditeur, l'objet et le contenu sont disponibles en tant que jetons."
+    "en": "Triggers when a new email arrives in the selected account's IMAP inbox. Provides the account name, sender address, subject and body as tokens.",
+    "nl": "Activeert wanneer een nieuw e-mailbericht binnenkomt in de IMAP-inbox van het geselecteerde account. De accountnaam, afzender, onderwerp en inhoud zijn beschikbaar als tokens.",
+    "de": "Löst aus, wenn eine neue E-Mail im IMAP-Posteingang des gewählten Kontos eingeht. Kontoname, Absender, Betreff und Inhalt werden als Token bereitgestellt.",
+    "fr": "Se déclenche lorsqu'un nouvel e-mail arrive dans la boîte de réception IMAP du compte sélectionné. Le nom du compte, l'expéditeur, l'objet et le contenu sont disponibles en tant que jetons."
   },
-  "highlight": true,
+  "args": [
+    {
+      "name": "account",
+      "type": "autocomplete",
+      "title": {
+        "en": "Account",
+        "nl": "Account",
+        "de": "Konto",
+        "fr": "Compte"
+      },
+      "placeholder": {
+        "en": "Select account...",
+        "nl": "Selecteer account...",
+        "de": "Konto auswählen...",
+        "fr": "Choisir un compte..."
+      }
+    }
+  ],
   "tokens": [
     {
       "name": "account_name",

@@ -1,7 +1,10 @@
 {
   "settings": {
-    "title": "Paramètres du Déclencheur E-mail",
-    "subtitle": "Configurez votre compte e-mail IMAP",
+    "title": "Paramètres Mail Hook",
+    "subtitle": "Gérez vos comptes e-mail IMAP",
+    "section_identity": "Compte",
+    "label_account_name": "Nom du compte",
+    "placeholder_account_name": "ex. E-mail professionnel",
     "section_connection": "Connexion IMAP",
     "label_host": "Hôte IMAP",
     "placeholder_host": "mail.exemple.fr",
@@ -14,11 +17,20 @@
     "section_polling": "Interrogation",
     "label_poll_interval": "Intervalle de vérification (secondes)",
     "placeholder_poll_interval": "60",
+    "btn_add_account": "+ Ajouter un compte",
+    "btn_edit": "Modifier",
+    "btn_delete": "Supprimer",
+    "btn_cancel": "Annuler",
+    "btn_save_account": "Enregistrer le compte",
     "btn_test": "Tester la connexion",
-    "btn_save": "Enregistrer les modifications",
+    "form_title_new": "Nouveau compte",
+    "form_title_edit": "Modifier le compte",
+    "no_accounts": "Aucun compte configuré. Ajoutez-en un ci-dessous.",
+    "confirm_delete": "Supprimer ce compte ?",
     "test_success": "Connexion réussie !",
     "test_failed": "Connexion échouée",
-    "save_success": "Paramètres enregistrés.",
-    "error_fill_fields": "Veuillez renseigner l'hôte, le nom d'utilisateur et le mot de passe."
+    "save_success": "Enregistré.",
+    "error_fill_fields": "Veuillez renseigner l'hôte, le nom d'utilisateur et le mot de passe.",
+    "error_name_required": "Le nom du compte est obligatoire."
   }
 }

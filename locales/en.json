@@ -1,7 +1,10 @@
 {
   "settings": {
     "title": "Mail Hook Settings",
-    "subtitle": "Configure your IMAP email account",
+    "subtitle": "Manage your IMAP email accounts",
+    "section_identity": "Account",
+    "label_account_name": "Account name",
+    "placeholder_account_name": "e.g. Work Email",
     "section_connection": "IMAP Connection",
     "label_host": "IMAP Host",
     "placeholder_host": "mail.example.com",
@@ -14,11 +17,20 @@
     "section_polling": "Polling",
     "label_poll_interval": "Check interval (seconds)",
     "placeholder_poll_interval": "60",
+    "btn_add_account": "+ Add account",
+    "btn_edit": "Edit",
+    "btn_delete": "Delete",
+    "btn_cancel": "Cancel",
+    "btn_save_account": "Save account",
     "btn_test": "Test connection",
-    "btn_save": "Save changes",
+    "form_title_new": "New account",
+    "form_title_edit": "Edit account",
+    "no_accounts": "No accounts configured yet. Add one below.",
+    "confirm_delete": "Delete this account?",
     "test_success": "Connection successful!",
     "test_failed": "Connection failed",
-    "save_success": "Settings saved.",
-    "error_fill_fields": "Please fill in host, username and password."
+    "save_success": "Saved.",
+    "error_fill_fields": "Please fill in host, username and password.",
+    "error_name_required": "Account name is required."
   }
 }

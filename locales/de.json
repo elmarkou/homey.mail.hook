@@ -1,7 +1,10 @@
 {
   "settings": {
-    "title": "E-Mail-Auslöser Einstellungen",
-    "subtitle": "IMAP-E-Mail-Konto konfigurieren",
+    "title": "Mail Hook Einstellungen",
+    "subtitle": "IMAP-E-Mail-Konten verwalten",
+    "section_identity": "Konto",
+    "label_account_name": "Kontoname",
+    "placeholder_account_name": "z.B. Arbeits-E-Mail",
     "section_connection": "IMAP-Verbindung",
     "label_host": "IMAP-Host",
     "placeholder_host": "mail.beispiel.de",
@@ -14,11 +17,20 @@
     "section_polling": "Abfrage",
     "label_poll_interval": "Prüfintervall (Sekunden)",
     "placeholder_poll_interval": "60",
+    "btn_add_account": "+ Konto hinzufügen",
+    "btn_edit": "Bearbeiten",
+    "btn_delete": "Löschen",
+    "btn_cancel": "Abbrechen",
+    "btn_save_account": "Konto speichern",
     "btn_test": "Verbindung testen",
-    "btn_save": "Änderungen speichern",
+    "form_title_new": "Neues Konto",
+    "form_title_edit": "Konto bearbeiten",
+    "no_accounts": "Noch keine Konten konfiguriert. Füge eines hinzu.",
+    "confirm_delete": "Dieses Konto löschen?",
     "test_success": "Verbindung erfolgreich!",
     "test_failed": "Verbindung fehlgeschlagen",
-    "save_success": "Einstellungen gespeichert.",
-    "error_fill_fields": "Bitte Host, Benutzername und Passwort ausfüllen."
+    "save_success": "Gespeichert.",
+    "error_fill_fields": "Bitte Host, Benutzername und Passwort ausfüllen.",
+    "error_name_required": "Kontoname ist erforderlich."
   }
 }

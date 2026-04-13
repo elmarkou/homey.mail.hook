@@ -13,6 +13,8 @@ module.exports = {
   async testConnection({ homey, body }: { homey: any; body: Record<string, unknown> }) {
     const app = homey.app as any;
     const settings = {
+      id: '',
+      name: '',
       host: String(body.host ?? ''),
       port: Number(body.port ?? 993),
       username: String(body.username ?? ''),

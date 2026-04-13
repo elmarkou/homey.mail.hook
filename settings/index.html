@@ -26,38 +26,124 @@
 
       .status-bar {
         display: none;
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 16px;
+        z-index: 9999;
         padding: 10px 14px;
         border-radius: 8px;
-        margin-bottom: 16px;
         font-size: 14px;
         font-weight: 500;
+        min-width: 220px;
+        max-width: calc(100% - 32px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        text-align: center;
       }
-      .status-bar.success {
-        background: #d4edda;
-        color: #155724;
-        display: block;
+      .status-bar.success { background: #d4edda; color: #155724; display: block; }
+      .status-bar.error   { background: #f8d7da; color: #721c24; display: block; }
+      .status-bar.info    { background: #d1ecf1; color: #0c5460; display: block; }
+
+      /* Account list */
+      .account-list {
+        margin-bottom: 16px;
       }
-      .status-bar.error {
-        background: #f8d7da;
-        color: #721c24;
-        display: block;
+
+      .account-card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
       }
-      .status-bar.info {
-        background: #d1ecf1;
-        color: #0c5460;
-        display: block;
+
+      .account-card-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .account-card-name {
+        font-weight: 600;
+        font-size: 15px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .account-card-username {
+        font-size: 13px;
+        color: #666;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .account-card-actions {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .btn-icon {
+        background: none;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 5px 10px;
+        font-size: 13px;
+        cursor: pointer;
+        color: #444;
+      }
+      .btn-icon:hover { background: #f0f0f0; }
+      .btn-icon.danger { color: #c0392b; border-color: #e8b4b4; }
+      .btn-icon.danger:hover { background: #fdf0f0; }
+
+      .no-accounts {
+        text-align: center;
+        color: #999;
+        font-size: 14px;
+        padding: 24px 0;
+        background: #fff;
+        border: 1px dashed #ddd;
+        border-radius: 8px;
+        margin-bottom: 10px;
+      }
+
+      /* Account form */
+      .account-form-wrapper {
+        background: #fff;
+        border: 1px solid #e5833c;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      .account-form-title {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 14px;
+        color: #e5833c;
       }
 
       .button-row {
         display: flex;
         gap: 12px;
-        margin-top: 24px;
+        margin-top: 16px;
       }
 
-      #btn-test.loading,
-      #btn-save.loading {
+      button.loading {
         opacity: 0.6;
         pointer-events: none;
+      }
+      /* Make form buttons stack vertically and span the available width */
+      .account-form-wrapper .button-row {
+        flex-direction: column;
+      }
+      .account-form-wrapper .button-row button {
+        width: 100%;
       }
     </style>
   </head>
@@ -68,129 +154,132 @@
         <p class="homey-subtitle" data-i18n="settings.subtitle"></p>
       </header>
 
-      <!-- IMAP Connection -->
-      <fieldset class="homey-form-fieldset">
-        <legend
-          class="homey-form-legend"
-          data-i18n="settings.section_connection"
-        ></legend>
-
-        <div class="homey-form-group">
-          <label
-            class="homey-form-label"
-            for="host"
-            data-i18n="settings.label_host"
-          ></label>
-          <input
-            class="homey-form-input"
-            id="host"
-            type="text"
-            autocomplete="off"
-            data-i18n-placeholder="settings.placeholder_host"
-          />
-        </div>
-
-        <div class="homey-form-group">
-          <label
-            class="homey-form-label"
-            for="port"
-            data-i18n="settings.label_port"
-          ></label>
-          <input
-            class="homey-form-input"
-            id="port"
-            type="number"
-            min="1"
-            max="65535"
-            value="993"
-          />
-        </div>
-
-        <div class="homey-form-group">
-          <label
-            class="homey-form-label"
-            for="username"
-            data-i18n="settings.label_username"
-          ></label>
-          <input
-            class="homey-form-input"
-            id="username"
-            type="email"
-            autocomplete="email"
-            data-i18n-placeholder="settings.placeholder_username"
-          />
-        </div>
-
-        <div class="homey-form-group">
-          <label
-            class="homey-form-label"
-            for="password"
-            data-i18n="settings.label_password"
-          ></label>
-          <input
-            class="homey-form-input"
-            id="password"
-            type="password"
-            autocomplete="current-password"
-          />
-        </div>
-
-        <div class="homey-form-group">
-          <label
-            class="homey-form-label"
-            style="
-              display: flex;
-              align-items: center;
-              gap: 8px;
-              cursor: pointer;
-            "
-          >
-            <input id="tls" type="checkbox" checked />
-            <span data-i18n="settings.label_tls"></span>
-          </label>
-        </div>
-      </fieldset>
-
-      <!-- Polling interval -->
-      <fieldset class="homey-form-fieldset">
-        <legend
-          class="homey-form-legend"
-          data-i18n="settings.section_polling"
-        ></legend>
-
-        <div class="homey-form-group">
-          <label
-            class="homey-form-label"
-            for="pollInterval"
-            data-i18n="settings.label_poll_interval"
-          ></label>
-          <input
-            class="homey-form-input"
-            id="pollInterval"
-            type="number"
-            min="10"
-            value="60"
-          />
-        </div>
-      </fieldset>
-
       <!-- Status message -->
       <div id="status" class="status-bar" role="alert"></div>
 
-      <!-- Action buttons -->
-      <div class="button-row">
-        <button
-          id="btn-test"
-          class="homey-button-secondary"
-          style="flex: 1"
-          data-i18n="settings.btn_test"
-        ></button>
-        <button
-          id="btn-save"
-          class="homey-button-primary"
-          style="flex: 1"
-          data-i18n="settings.btn_save"
-        ></button>
+      <!-- Account list -->
+      <div id="account-list" class="account-list"></div>
+
+      <!-- Add account button -->
+      <button
+        id="btn-add"
+        class="homey-button-secondary"
+        style="width: 100%"
+        data-i18n="settings.btn_add_account"
+      ></button>
+
+      <!-- Account edit/add form (hidden by default) -->
+      <div id="account-form-wrapper" class="account-form-wrapper" style="display:none; margin-top:16px">
+        <div id="account-form-title" class="account-form-title"></div>
+
+        <fieldset class="homey-form-fieldset">
+          <legend class="homey-form-legend" data-i18n="settings.section_identity"></legend>
+
+          <div class="homey-form-group">
+            <label class="homey-form-label" for="acc-name" data-i18n="settings.label_account_name"></label>
+            <input
+              class="homey-form-input"
+              id="acc-name"
+              type="text"
+              autocomplete="off"
+              data-i18n-placeholder="settings.placeholder_account_name"
+            />
+          </div>
+        </fieldset>
+
+        <fieldset class="homey-form-fieldset">
+          <legend class="homey-form-legend" data-i18n="settings.section_connection"></legend>
+
+          <div class="homey-form-group">
+            <label class="homey-form-label" for="acc-host" data-i18n="settings.label_host"></label>
+            <input
+              class="homey-form-input"
+              id="acc-host"
+              type="text"
+              autocomplete="off"
+              data-i18n-placeholder="settings.placeholder_host"
+            />
+          </div>
+
+          <div class="homey-form-group">
+            <label class="homey-form-label" for="acc-port" data-i18n="settings.label_port"></label>
+            <input
+              class="homey-form-input"
+              id="acc-port"
+              type="number"
+              min="1"
+              max="65535"
+              value="993"
+            />
+          </div>
+
+          <div class="homey-form-group">
+            <label class="homey-form-label" for="acc-username" data-i18n="settings.label_username"></label>
+            <input
+              class="homey-form-input"
+              id="acc-username"
+              type="email"
+              autocomplete="email"
+              data-i18n-placeholder="settings.placeholder_username"
+            />
+          </div>
+
+          <div class="homey-form-group">
+            <label class="homey-form-label" for="acc-password" data-i18n="settings.label_password"></label>
+            <input
+              class="homey-form-input"
+              id="acc-password"
+              type="password"
+              autocomplete="current-password"
+            />
+          </div>
+
+          <div class="homey-form-group">
+            <label
+              class="homey-form-label"
+              style="display: flex; align-items: center; gap: 8px; cursor: pointer;"
+            >
+              <input id="acc-tls" type="checkbox" checked />
+              <span data-i18n="settings.label_tls"></span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset class="homey-form-fieldset">
+          <legend class="homey-form-legend" data-i18n="settings.section_polling"></legend>
+
+          <div class="homey-form-group">
+            <label class="homey-form-label" for="acc-poll-interval" data-i18n="settings.label_poll_interval"></label>
+            <input
+              class="homey-form-input"
+              id="acc-poll-interval"
+              type="number"
+              min="10"
+              value="60"
+            />
+          </div>
+        </fieldset>
+
+        <div class="button-row">
+          <button
+            id="btn-test"
+            class="homey-button-secondary"
+            style="flex: 1"
+            data-i18n="settings.btn_test"
+          ></button>
+          <button
+            id="btn-cancel"
+            class="homey-button-secondary"
+            style="flex: 1"
+            data-i18n="settings.btn_cancel"
+          ></button>
+          <button
+            id="btn-save-account"
+            class="homey-button-primary"
+            style="flex: 1"
+            data-i18n="settings.btn_save_account"
+          ></button>
+        </div>
       </div>
     </div>
 
@@ -198,143 +287,245 @@
       function onHomeyReady(Homey) {
         Homey.ready();
 
-        // ── i18n helper ──────────────────────────────────────────────────
+        var accounts = [];
+        var editingId = null; // null = new account
+
+        // ── i18n helpers ─────────────────────────────────────────────────
+        function t(key) {
+          var v = Homey.__(key);
+          return v && v !== key ? v : key;
+        }
+
         function applyI18n() {
           document.querySelectorAll("[data-i18n]").forEach(function (el) {
             var key = el.getAttribute("data-i18n");
-            var translated = Homey.__(key);
-            if (translated && translated !== key) el.textContent = translated;
+            var v = t(key);
+            el.textContent = v;
           });
-          document
-            .querySelectorAll("[data-i18n-placeholder]")
-            .forEach(function (el) {
-              var key = el.getAttribute("data-i18n-placeholder");
-              var translated = Homey.__(key);
-              if (translated && translated !== key)
-                el.setAttribute("placeholder", translated);
-            });
-          // Translate button text
-          ["btn-test", "btn-save"].forEach(function (id) {
-            var el = document.getElementById(id);
-            if (!el) return;
-            var key = el.getAttribute("data-i18n");
-            if (!key) return;
-            var translated = Homey.__(key);
-            if (translated && translated !== key) el.textContent = translated;
+          document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
+            var key = el.getAttribute("data-i18n-placeholder");
+            var v = t(key);
+            el.setAttribute("placeholder", v);
           });
         }
 
         applyI18n();
 
-        // ── Load saved settings ──────────────────────────────────────────
-        Homey.get(function (err, allSettings) {
-          if (err) return;
-          if (!allSettings) return;
-
-          if (allSettings.host)
-            document.getElementById("host").value = allSettings.host;
-          if (allSettings.port)
-            document.getElementById("port").value = allSettings.port;
-          if (allSettings.username)
-            document.getElementById("username").value = allSettings.username;
-          if (allSettings.password)
-            document.getElementById("password").value = allSettings.password;
-          if (allSettings.pollInterval)
-            document.getElementById("pollInterval").value =
-              allSettings.pollInterval;
-          if (typeof allSettings.tls === "boolean") {
-            document.getElementById("tls").checked = allSettings.tls;
-          }
-        });
-
-        // ── Status helper ────────────────────────────────────────────────
+        // ── Status helper ─────────────────────────────────────────────────
         function showStatus(message, type) {
           var el = document.getElementById("status");
           el.textContent = message;
           el.className = "status-bar " + type;
         }
 
+        function hideStatus() {
+          document.getElementById("status").className = "status-bar";
+        }
+
+        // ── Generate simple ID ────────────────────────────────────────────
+        function generateId() {
+          return Date.now().toString(36) + Math.random().toString(36).slice(2);
+        }
+
+        // ── Render account list ───────────────────────────────────────────
+        function renderList() {
+          var container = document.getElementById("account-list");
+          container.innerHTML = "";
+
+          if (accounts.length === 0) {
+            var empty = document.createElement("div");
+            empty.className = "no-accounts";
+            empty.textContent = t("settings.no_accounts");
+            container.appendChild(empty);
+            return;
+          }
+
+          accounts.forEach(function (account) {
+            var card = document.createElement("div");
+            card.className = "account-card";
+
+            var info = document.createElement("div");
+            info.className = "account-card-info";
+
+            var name = document.createElement("div");
+            name.className = "account-card-name";
+            name.textContent = account.name;
+
+            var username = document.createElement("div");
+            username.className = "account-card-username";
+            username.textContent = account.username;
+
+            info.appendChild(name);
+            info.appendChild(username);
+
+            var actions = document.createElement("div");
+            actions.className = "account-card-actions";
+
+            var btnEdit = document.createElement("button");
+            btnEdit.className = "btn-icon";
+            btnEdit.textContent = t("settings.btn_edit");
+            btnEdit.addEventListener("click", function () { openEditForm(account.id); });
+
+            var btnDelete = document.createElement("button");
+            btnDelete.className = "btn-icon danger";
+            btnDelete.textContent = t("settings.btn_delete");
+            btnDelete.addEventListener("click", function () { deleteAccount(account.id); });
+
+            actions.appendChild(btnEdit);
+            actions.appendChild(btnDelete);
+
+            card.appendChild(info);
+            card.appendChild(actions);
+            container.appendChild(card);
+          });
+        }
+
+        // ── Load accounts ─────────────────────────────────────────────────
+        Homey.get("accounts", function (err, value) {
+          if (!err && Array.isArray(value)) {
+            accounts = value;
+          }
+          renderList();
+        });
+
+        // ── Open form ─────────────────────────────────────────────────────
+        function openNewForm() {
+          editingId = null;
+          document.getElementById("account-form-title").textContent = t("settings.form_title_new");
+          document.getElementById("acc-name").value = "";
+          document.getElementById("acc-host").value = "";
+          document.getElementById("acc-port").value = "993";
+          document.getElementById("acc-username").value = "";
+          document.getElementById("acc-password").value = "";
+          document.getElementById("acc-tls").checked = true;
+          document.getElementById("acc-poll-interval").value = "60";
+          document.getElementById("account-form-wrapper").style.display = "";
+          document.getElementById("btn-add").style.display = "none";
+          hideStatus();
+          document.getElementById("acc-name").focus();
+        }
+
+        function openEditForm(id) {
+          var account = accounts.find(function (a) { return a.id === id; });
+          if (!account) return;
+          editingId = id;
+          document.getElementById("account-form-title").textContent = t("settings.form_title_edit");
+          document.getElementById("acc-name").value = account.name;
+          document.getElementById("acc-host").value = account.host;
+          document.getElementById("acc-port").value = account.port || 993;
+          document.getElementById("acc-username").value = account.username;
+          document.getElementById("acc-password").value = account.password || "";
+          document.getElementById("acc-tls").checked = account.tls !== false;
+          document.getElementById("acc-poll-interval").value = account.pollInterval || 60;
+          document.getElementById("account-form-wrapper").style.display = "";
+          document.getElementById("btn-add").style.display = "none";
+          hideStatus();
+          document.getElementById("acc-name").focus();
+        }
+
+        function closeForm() {
+          document.getElementById("account-form-wrapper").style.display = "none";
+          document.getElementById("btn-add").style.display = "";
+          editingId = null;
+          hideStatus();
+        }
+
+        document.getElementById("btn-add").addEventListener("click", openNewForm);
+        document.getElementById("btn-cancel").addEventListener("click", closeForm);
+
+        // ── Get form values ───────────────────────────────────────────────
         function getFormValues() {
           return {
-            host: document.getElementById("host").value.trim(),
-            port: parseInt(document.getElementById("port").value, 10) || 993,
-            username: document.getElementById("username").value.trim(),
-            password: document.getElementById("password").value,
-            tls: document.getElementById("tls").checked,
-            pollInterval:
-              parseInt(document.getElementById("pollInterval").value, 10) || 60,
+            name: document.getElementById("acc-name").value.trim(),
+            host: document.getElementById("acc-host").value.trim(),
+            port: parseInt(document.getElementById("acc-port").value, 10) || 993,
+            username: document.getElementById("acc-username").value.trim(),
+            password: document.getElementById("acc-password").value,
+            tls: document.getElementById("acc-tls").checked,
+            pollInterval: parseInt(document.getElementById("acc-poll-interval").value, 10) || 60,
           };
         }
 
-        // ── Test connection ──────────────────────────────────────────────
-        document
-          .getElementById("btn-test")
-          .addEventListener("click", function () {
-            var values = getFormValues();
-            if (!values.host || !values.username || !values.password) {
-              showStatus(Homey.__("settings.error_fill_fields"), "error");
+        // ── Test connection ───────────────────────────────────────────────
+        document.getElementById("btn-test").addEventListener("click", function () {
+          var values = getFormValues();
+          if (!values.host || !values.username || !values.password) {
+            showStatus(t("settings.error_fill_fields"), "error");
+            return;
+          }
+
+          var btn = document.getElementById("btn-test");
+          btn.classList.add("loading");
+          showStatus("...", "info");
+
+          Homey.api("POST", "/test", values, function (err, result) {
+            btn.classList.remove("loading");
+            if (err) {
+              showStatus(t("settings.test_failed") + ": " + err.message, "error");
               return;
             }
-
-            var btn = document.getElementById("btn-test");
-            btn.classList.add("loading");
-            showStatus("...", "info");
-
-            Homey.api("POST", "/test", values, function (err, result) {
-              btn.classList.remove("loading");
-              if (err) {
-                showStatus(
-                  (Homey.__("settings.test_failed") || "Failed") +
-                    ": " +
-                    err.message,
-                  "error",
-                );
-                return;
-              }
-              if (result && result.success) {
-                showStatus(
-                  result.message || Homey.__("settings.test_success"),
-                  "success",
-                );
-              } else {
-                showStatus(
-                  (Homey.__("settings.test_failed") || "Failed") +
-                    ": " +
-                    ((result && result.message) || ""),
-                  "error",
-                );
-              }
-            });
+            if (result && result.success) {
+              showStatus(result.message || t("settings.test_success"), "success");
+            } else {
+              showStatus(t("settings.test_failed") + ": " + ((result && result.message) || ""), "error");
+            }
           });
+        });
 
-        // ── Save settings ────────────────────────────────────────────────
-        document
-          .getElementById("btn-save")
-          .addEventListener("click", function () {
-            var values = getFormValues();
-            var btn = document.getElementById("btn-save");
-            btn.classList.add("loading");
+        // ── Save account ──────────────────────────────────────────────────
+        document.getElementById("btn-save-account").addEventListener("click", function () {
+          var values = getFormValues();
 
-            var keys = Object.keys(values);
-            var remaining = keys.length;
-            var hadError = false;
+          if (!values.name) {
+            showStatus(t("settings.error_name_required"), "error");
+            return;
+          }
+          if (!values.host || !values.username || !values.password) {
+            showStatus(t("settings.error_fill_fields"), "error");
+            return;
+          }
 
-            keys.forEach(function (key) {
-              Homey.set(key, values[key], function (err) {
-                if (err && !hadError) {
-                  hadError = true;
-                  showStatus(err.message, "error");
-                }
-                remaining--;
-                if (remaining === 0) {
-                  btn.classList.remove("loading");
-                  if (!hadError) {
-                    showStatus(Homey.__("settings.save_success"), "success");
-                  }
-                }
-              });
+          var btn = document.getElementById("btn-save-account");
+          btn.classList.add("loading");
+
+          if (editingId !== null) {
+            // Update existing account
+            accounts = accounts.map(function (a) {
+              return a.id === editingId ? Object.assign({}, a, values) : a;
             });
+          } else {
+            // Add new account
+            accounts.push(Object.assign({ id: generateId() }, values));
+          }
+
+          Homey.set("accounts", accounts, function (err) {
+            btn.classList.remove("loading");
+            if (err) {
+              showStatus(err.message, "error");
+              return;
+            }
+            renderList();
+            closeForm();
+            showStatus(t("settings.save_success"), "success");
           });
+        });
+
+        // ── Delete account ────────────────────────────────────────────────
+        function deleteAccount(id) {
+          if (!window.confirm(t("settings.confirm_delete"))) return;
+
+          accounts = accounts.filter(function (a) { return a.id !== id; });
+
+          Homey.set("accounts", accounts, function (err) {
+            if (err) {
+              showStatus(err.message, "error");
+              return;
+            }
+            renderList();
+            if (editingId === id) closeForm();
+            showStatus(t("settings.save_success"), "success");
+          });
+        }
       }
     </script>
   </body>

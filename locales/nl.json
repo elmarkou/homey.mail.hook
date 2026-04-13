@@ -1,7 +1,10 @@
 {
   "settings": {
     "title": "Mail Hook Instellingen",
-    "subtitle": "Configureer uw IMAP e-mailaccount",
+    "subtitle": "Beheer uw IMAP e-mailaccounts",
+    "section_identity": "Account",
+    "label_account_name": "Accountnaam",
+    "placeholder_account_name": "bijv. Werk E-mail",
     "section_connection": "IMAP-verbinding",
     "label_host": "IMAP-host",
     "placeholder_host": "mail.voorbeeld.nl",
@@ -14,11 +17,20 @@
     "section_polling": "Polling",
     "label_poll_interval": "Controleer-interval (seconden)",
     "placeholder_poll_interval": "60",
+    "btn_add_account": "+ Account toevoegen",
+    "btn_edit": "Bewerken",
+    "btn_delete": "Verwijderen",
+    "btn_cancel": "Annuleren",
+    "btn_save_account": "Account opslaan",
     "btn_test": "Verbinding testen",
-    "btn_save": "Wijzigingen opslaan",
+    "form_title_new": "Nieuw account",
+    "form_title_edit": "Account bewerken",
+    "no_accounts": "Nog geen accounts geconfigureerd. Voeg er een toe.",
+    "confirm_delete": "Dit account verwijderen?",
     "test_success": "Verbinding geslaagd!",
     "test_failed": "Verbinding mislukt",
-    "save_success": "Instellingen opgeslagen.",
-    "error_fill_fields": "Vul host, gebruikersnaam en wachtwoord in."
+    "save_success": "Opgeslagen.",
+    "error_fill_fields": "Vul host, gebruikersnaam en wachtwoord in.",
+    "error_name_required": "Accountnaam is verplicht."
   }
 }
