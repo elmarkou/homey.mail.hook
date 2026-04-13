@@ -2,6 +2,7 @@ Mail Hook triggert Homey Flows wanneer nieuwe e-mails in een geconfigureerde IMA
 Configureer de IMAP-host, poort, TLS, gebruikersnaam en wachtwoord in de app-instellingen.
 De trigger biedt tokens voor:
 
+- accountnaam
 - afzenderadres
 - afzendernaam
 - onderwerp

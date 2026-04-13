@@ -1,6 +1,12 @@
 {
   "id": "email_received_on_account",
   "title": {
+    "en": "A new email is received on the selected account",
+    "nl": "Er is een nieuwe e-mail ontvangen op het geselecteerde account",
+    "de": "Eine neue E-Mail wurde auf dem ausgewählten Konto empfangen",
+    "fr": "Un nouvel e-mail a été reçu sur le compte sélectionné"
+  },
+  "titleFormatted": {
     "en": "A new email is received on [[account]]",
     "nl": "Er is een nieuwe e-mail ontvangen op [[account]]",
     "de": "Eine neue E-Mail wurde auf [[account]] empfangen",
