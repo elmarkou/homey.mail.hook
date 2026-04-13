@@ -15,10 +15,10 @@
     "fr": "Mail Hook"
   },
   "description": {
-    "en": "Trigger Flows when a new email arrives via IMAP. Use flow tokens for the sender, subject and body.",
-    "nl": "Activeer Flows wanneer een nieuw e-mailbericht binnenkomt via IMAP. Gebruik flow-tokens voor de afzender, het onderwerp en de inhoud.",
-    "de": "Flows auslösen, wenn eine neue E-Mail per IMAP eintrifft. Flow-Token für Absender, Betreff und Inhalt verwenden.",
-    "fr": "Déclenche des Flows à l'arrivée d'un nouvel e-mail via IMAP. Utilisez les jetons de flux pour l'expéditeur, l'objet et le contenu."
+    "en": "Connect your inbox to your smart home automation.",
+    "nl": "Verbind je inbox met je slimme woning automatisering.",
+    "de": "Verbinde deine Inbox mit deiner Smart-Home-Automatisierung.",
+    "fr": "Connectez votre boîte de réception à votre automatisation maison intelligente."
   },
   "tags": {
     "en": [
