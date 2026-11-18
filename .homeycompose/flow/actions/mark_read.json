@@ -1,0 +1,69 @@
+{
+  "id": "mark_read",
+  "title": {
+    "en": "Mark email as read or unread",
+    "nl": "Markeer e-mail als gelezen of ongelezen",
+    "de": "E-Mail als gelesen oder ungelesen markieren",
+    "fr": "Marquer l'e-mail comme lu ou non lu"
+  },
+  "titleFormatted": {
+    "en": "Mark email [[mail_ref]] as [[state]]",
+    "nl": "Markeer e-mail [[mail_ref]] als [[state]]",
+    "de": "E-Mail [[mail_ref]] als [[state]] markieren",
+    "fr": "Marquer l'e-mail [[mail_ref]] comme [[state]]"
+  },
+  "hint": {
+    "en": "Sets the read flag of the email that started this flow.",
+    "nl": "Zet de gelezen-status van de e-mail die deze flow startte.",
+    "de": "Setzt den Gelesen-Status der E-Mail, die diesen Flow gestartet hat.",
+    "fr": "Définit l'état lu de l'e-mail qui a déclenché ce flow."
+  },
+  "args": [
+    {
+      "name": "mail_ref",
+      "type": "text",
+      "title": {
+        "en": "Email reference",
+        "nl": "E-mailreferentie",
+        "de": "E-Mail-Referenz",
+        "fr": "Référence de l'e-mail"
+      },
+      "placeholder": {
+        "en": "Drop the 'Email reference' token",
+        "nl": "Sleep het token 'E-mailreferentie' hierheen",
+        "de": "Token 'E-Mail-Referenz' hier ablegen",
+        "fr": "Déposez le jeton « Référence de l'e-mail »"
+      }
+    },
+    {
+      "name": "state",
+      "type": "dropdown",
+      "title": {
+        "en": "State",
+        "nl": "Status",
+        "de": "Status",
+        "fr": "État"
+      },
+      "values": [
+        {
+          "id": "read",
+          "label": {
+            "en": "read",
+            "nl": "gelezen",
+            "de": "gelesen",
+            "fr": "lu"
+          }
+        },
+        {
+          "id": "unread",
+          "label": {
+            "en": "unread",
+            "nl": "ongelezen",
+            "de": "ungelesen",
+            "fr": "non lu"
+          }
+        }
+      ]
+    }
+  ]
+}

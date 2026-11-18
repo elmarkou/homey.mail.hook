@@ -1,0 +1,71 @@
+{
+  "id": "move_email",
+  "title": {
+    "en": "Move email to folder",
+    "nl": "Verplaats e-mail naar map",
+    "de": "E-Mail in Ordner verschieben",
+    "fr": "Déplacer l'e-mail vers un dossier"
+  },
+  "titleFormatted": {
+    "en": "Move email [[mail_ref]] on [[account]] to [[folder]]",
+    "nl": "Verplaats e-mail [[mail_ref]] op [[account]] naar [[folder]]",
+    "de": "E-Mail [[mail_ref]] auf [[account]] nach [[folder]] verschieben",
+    "fr": "Déplacer l'e-mail [[mail_ref]] de [[account]] vers [[folder]]"
+  },
+  "hint": {
+    "en": "Moves the email to an existing folder of the selected account. Afterwards the email reference no longer works: in an Advanced Flow connect this card after the other Mail Hook cards, in a standard Flow give it a short delay.",
+    "nl": "Verplaatst de e-mail naar een bestaande map van het geselecteerde account. Daarna werkt de e-mailreferentie niet meer: verbind deze kaart in een Advanced Flow na de andere Mail Hook-kaarten, geef hem in een standaard Flow een korte vertraging.",
+    "de": "Verschiebt die E-Mail in einen vorhandenen Ordner des gewählten Kontos. Danach funktioniert die E-Mail-Referenz nicht mehr: verbinde diese Karte im Advanced Flow nach den anderen Mail-Hook-Karten, gib ihr in einem Standard-Flow eine kurze Verzögerung.",
+    "fr": "Déplace l'e-mail vers un dossier existant du compte sélectionné. Ensuite, la référence de l'e-mail ne fonctionne plus : dans un Advanced Flow, reliez cette carte après les autres cartes Mail Hook ; dans un Flow standard, ajoutez un court délai."
+  },
+  "args": [
+    {
+      "name": "mail_ref",
+      "type": "text",
+      "title": {
+        "en": "Email reference",
+        "nl": "E-mailreferentie",
+        "de": "E-Mail-Referenz",
+        "fr": "Référence de l'e-mail"
+      },
+      "placeholder": {
+        "en": "Drop the 'Email reference' token",
+        "nl": "Sleep het token 'E-mailreferentie' hierheen",
+        "de": "Token 'E-Mail-Referenz' hier ablegen",
+        "fr": "Déposez le jeton « Référence de l'e-mail »"
+      }
+    },
+    {
+      "name": "account",
+      "type": "autocomplete",
+      "title": {
+        "en": "Account",
+        "nl": "Account",
+        "de": "Konto",
+        "fr": "Compte"
+      },
+      "placeholder": {
+        "en": "Select account...",
+        "nl": "Selecteer account...",
+        "de": "Konto auswählen...",
+        "fr": "Choisir un compte..."
+      }
+    },
+    {
+      "name": "folder",
+      "type": "autocomplete",
+      "title": {
+        "en": "Folder",
+        "nl": "Map",
+        "de": "Ordner",
+        "fr": "Dossier"
+      },
+      "placeholder": {
+        "en": "Select folder...",
+        "nl": "Selecteer map...",
+        "de": "Ordner auswählen...",
+        "fr": "Choisir un dossier..."
+      }
+    }
+  ]
+}

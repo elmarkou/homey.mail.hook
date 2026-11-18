@@ -78,6 +78,19 @@
       "example": {
         "en": "Dear customer, your order is on its way..."
       }
+    },
+    {
+      "name": "mail_ref",
+      "type": "string",
+      "title": {
+        "en": "Email reference",
+        "nl": "E-mailreferentie",
+        "de": "E-Mail-Referenz",
+        "fr": "Référence de l'e-mail"
+      },
+      "example": {
+        "en": "lx3k9a:1:1234"
+      }
     }
   ]
 }
