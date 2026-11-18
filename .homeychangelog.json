@@ -14,5 +14,9 @@
   "1.2.0": {
     "en": "New action cards: mark email as read/unread, delete email (to Trash), move email to folder. Readable email body token. Fixes duplicate polling after saving settings and high memory use on large emails.",
     "nl": "Nieuwe actiekaarten: e-mail als gelezen/ongelezen markeren, e-mail verwijderen (naar prullenbak), e-mail naar map verplaatsen. Leesbare e-mailinhoud. Oplossing voor dubbele controles na opslaan van instellingen en hoog geheugengebruik bij grote e-mails."
+  },
+  "1.2.1": {
+    "en": "Added a link to the Homey Community topic.",
+    "nl": "Link naar het Homey Community-topic toegevoegd."
   }
 }

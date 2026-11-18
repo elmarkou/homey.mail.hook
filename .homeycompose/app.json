@@ -1,6 +1,6 @@
 {
   "id": "mail.hook",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "compatibility": ">=12.4.0",
   "sdk": 3,
   "runtime": "nodejs",
@@ -87,5 +87,6 @@
   "support": "https://github.com/elmarkou/homey.mail.hook/issues",
   "bugs": {
     "url": "https://github.com/elmarkou/homey.mail.hook/issues"
-  }
+  },
+  "homeyCommunityTopicId": 153606
 }
