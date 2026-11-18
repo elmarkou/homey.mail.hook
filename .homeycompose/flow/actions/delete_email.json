@@ -29,10 +29,10 @@
         "fr": "Référence de l'e-mail"
       },
       "placeholder": {
-        "en": "Drop the 'Email reference' token",
-        "nl": "Sleep het token 'E-mailreferentie' hierheen",
-        "de": "Token 'E-Mail-Referenz' hier ablegen",
-        "fr": "Déposez le jeton « Référence de l'e-mail »"
+        "en": "Tap the tag icon, pick 'Email reference'",
+        "nl": "Tik op het label-icoon, kies 'E-mailreferentie'",
+        "de": "Etikett-Symbol antippen, 'E-Mail-Referenz' wählen",
+        "fr": "Touchez l'icône étiquette, choisissez « Référence de l'e-mail »"
       }
     }
   ]
